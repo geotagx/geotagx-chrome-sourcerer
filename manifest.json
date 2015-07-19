@@ -7,7 +7,7 @@
 	       "48": "icon48.png",
 	      "128": "icon128.png" },
 	"background": {
-	"scripts": ["geotagx-chrome-sourcerer.js"]
+	"scripts": ["lib/base64.min.js","geotagx-chrome-sourcerer.js"]
 	},
 	"manifest_version": 2
 }

@@ -1,6 +1,6 @@
 var background_page = chrome.extension.getBackgroundPage();
 
-var TARGET_HOST = "http://geotagx.org";
+var TARGET_HOST = "http://localhost:5000";
 var TARGET_URI  = "/geotagx/sourcerer-proxy"
 
 var GEOTAGX_SOURCERER_TYPE="geotagx-chrome-sourcerer"
@@ -18,17 +18,21 @@ chrome.contextMenus.create({
  * Sends a HTTP GET Request to the sourcerer-proxy
  * TODO : Handle errors here
  */
-function httpGet(theUrl)
+function httpGet(url)
 {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.open( "GET", url, false );
     xmlHttp.send( null );
     return xmlHttp.responseText;
 }
 
 function handleImageURL(url) {
-    ARGUMENTS = GEOTAGX_SOURCERER_TYPE + DELIMITER + url
+    var sourcerer_object = {}
+    sourcerer_object.source = GEOTAGX_SOURCERER_TYPE;
+    sourcerer_object.image_url = url
+
+    //Base64 encode the data before sending the GET request
+    ARGUMENTS = Base64.encode(JSON.stringify(sourcerer_object))
     sourcerer_proxy_url = TARGET_HOST+TARGET_URI+"?sourcerer-data="+ARGUMENTS
     httpGet(sourcerer_proxy_url)
 }
-
