@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Choose relevant GeoTag-X Project</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<style type="text/css">
+		/*
+		change margin-top, if your line-height is different.
+		*/
+		input[type=checkbox]{
+		height:18px;
+		width:18px;
+		padding:0;
+		margin-top:80px;
+		display:block;
+		float:left;
+		}
+		.label{
+		border:1px solid red;
+		}
+	</style>
+</head>
+<body>
+	<div class="container"> 
+		<div class="row">
+			<h3> Please select the relevant GeoTag-X category in which this image might be useful </h3>
+		</div>
+		<br/><br/>
+		<div class="row">
+			<div class="input_form">
+				<form id="category_options">
+				</form>
+				<br/><br/>
+				<div class='row'>
+				<center><a id="submit" class="btn btn-success">Submit</a>
+				<a id="close_window" class="btn btn-danger">Close</a></center>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script src="lib/jquery-2.1.4.min.js"></script>
+<script src="lib/base64.min.js"></script>
+<script src="lib/category-selector-actions.js"></script>
+</body>
+</html>
