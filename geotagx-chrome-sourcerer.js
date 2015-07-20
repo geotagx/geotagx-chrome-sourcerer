@@ -4,8 +4,7 @@ chrome.contextMenus.create({
     title: "Upload Image URL to GeoTag-X",
     contexts:["image"],
     onclick: function(info) {
-        //handleImageURL(info.srcUrl);
-        chrome.runtime.sendMessage({type:'found_image', imageURL:info.srcUrl});
+        chrome.runtime.sendMessage({type:'found_image', imageURL:info.srcUrl, sourceUrl: info.pageUrl});
     }
 });
 
@@ -26,9 +25,10 @@ chrome.runtime.onMessage.addListener(function(request) {
             });
 
             chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
-                if(tabId == tab.id && changeInfo.status == "loading"){
+                if(tabId == tab.id && changeInfo.status == "complete"){
                     chrome.tabs.sendMessage(tabId, {
                         imageURL : request.imageURL,
+                        sourceUrl : request.sourceUrl
                     });
                 }
             });
