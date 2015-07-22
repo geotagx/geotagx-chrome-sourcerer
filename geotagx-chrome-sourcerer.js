@@ -8,31 +8,50 @@ chrome.contextMenus.create({
     }
 });
 
+//Checks for blacklisted domains and returns true if the domain is blacklisted
+function checkForBlacklistedHosts(SOURCE_URL, IMAGE_URL){
+    console.log(SOURCE_URL);
+  var parser = document.createElement('a');
+  parser.href = SOURCE_URL;
+
+  if(parser.hostname.match(/\.google\./gi)){
+    return true;
+  }else{
+    return false;
+  }
+}
 
 // Handles opening of dialog window for pushing images to GeoTag-X
 chrome.runtime.onMessage.addListener(function(request) {
     if (request.type === 'found_image') {
-        chrome.tabs.create({
-            url: chrome.extension.getURL('choose_category.html'),
-            active: false
-        }, function(tab) {
-            // After the tab has been created, open a window to inject the tab
-            chrome.windows.create({
-                tabId: tab.id,
-                type: 'popup',
-                focused: true
-                // incognito, top, left, ...
-            });
 
-            chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
-                if(tabId == tab.id && changeInfo.status == "complete"){
-                    chrome.tabs.sendMessage(tabId, {
-                        imageURL : request.imageURL,
-                        sourceUrl : request.sourceUrl
-                    });
-                }
+        //Check for blacklisted domains
+        if(checkForBlacklistedHosts(request.sourceUrl, request.imageURL)){
+            alert("We cannot collect images from Google. We would encourage you to visit the page and then try resending the image as we are required to collect the actual source of the image");
+            return;
+        }else{
+            chrome.tabs.create({
+                url: chrome.extension.getURL('choose_category.html'),
+                active: false
+            }, function(tab) {
+                // After the tab has been created, open a window to inject the tab
+                chrome.windows.create({
+                    tabId: tab.id,
+                    type: 'popup',
+                    focused: true
+                    // incognito, top, left, ...
+                });
+
+                chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+                    if(tabId == tab.id && changeInfo.status == "complete"){
+                        chrome.tabs.sendMessage(tabId, {
+                            imageURL : request.imageURL,
+                            sourceUrl : request.sourceUrl
+                        });
+                    }
+                });
             });
-        });
+        }
     }
 });
 
