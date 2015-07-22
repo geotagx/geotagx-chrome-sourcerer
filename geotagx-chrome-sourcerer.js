@@ -1,4 +1,7 @@
 var background_page = chrome.extension.getBackgroundPage();
+var TARGET_HOST = "http://geotagx.org";
+var refreshCategoriesTimeOut = 24 * 60 * 60 * 1000;
+
 
 chrome.contextMenus.create({
     title: "Upload Image URL to GeoTag-X",
@@ -20,6 +23,76 @@ function checkForBlacklistedHosts(SOURCE_URL, IMAGE_URL){
     return false;
   }
 }
+
+var GEOTAGX_CATEGORIES =  [
+   {
+      "img":"/static/geotagx-img/categories/ebola_response.png",
+      "name":"Ebola Response",
+      "short_name":"ebolaresponse"
+   },
+   {
+      "img":"/static/geotagx-img/categories/winter_shelter.png",
+      "name":"Winter Shelter",
+      "short_name":"emergencyshelterassessmentinthemiddleeast"
+   },
+   {
+      "img":"/static/geotagx-img/categories/yemeni_agricultural_water_assesment.png",
+      "name":"Yemeni Agricultural Water Assesment",
+      "short_name":"yemeniagriculturalwaterassessment"
+   },
+   {
+      "img":"/static/geotagx-img/categories/yamuna_monsoon_flooding.png",
+      "name":"Yamuna Monsoon Flooding 2013",
+      "short_name":"yamunamonsoonflooding2013"
+   },
+   {
+      "img":"/static/geotagx-img/categories/somali_drought.png",
+      "name":"Somali Drought",
+      "short_name":"somalidrought"
+   }
+]
+
+
+
+/**
+ * Sends a HTTP GET Request to the sourcerer-proxy
+ * TODO : Handle errors here
+ */
+function httpGet(url)
+{
+    try{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", url, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+    }catch(err){
+        //alert("Something went wrong :( Are you sure you are connected to the internet ? Please try again later !!");
+        //Pass silently for now
+        return false;
+    }
+}
+
+/**
+ * Updates GeoTagX Categories list
+ * @return {[type]} [description]
+ */
+function updateGeoTagXCategories(){
+    CATEGORIES_END_POINT = "/geotagx/sourcerer/categories.json"
+    json_response = httpGet(TARGET_HOST+CATEGORIES_END_POINT);
+    if(json_response){
+        data = JSON.parse(json_response);
+        GEOTAGX_CATEGORIES = []
+        $.each(data, function(key, value) {
+            console.log(key, value);
+            value.short_name = key;
+            GEOTAGX_CATEGORIES.push(value);
+        });
+    }
+}
+
+updateGeoTagXCategories();
+setInterval(updateGeoTagXCategories(), refreshCategoriesTimeOut);
+
 
 // Handles opening of dialog window for pushing images to GeoTag-X
 chrome.runtime.onMessage.addListener(function(request) {
@@ -46,7 +119,8 @@ chrome.runtime.onMessage.addListener(function(request) {
                     if(tabId == tab.id && changeInfo.status == "complete"){
                         chrome.tabs.sendMessage(tabId, {
                             imageURL : request.imageURL,
-                            sourceUrl : request.sourceUrl
+                            sourceUrl : request.sourceUrl,
+                            GEOTAGX_CATEGORIES : GEOTAGX_CATEGORIES
                         });
                     }
                 });
