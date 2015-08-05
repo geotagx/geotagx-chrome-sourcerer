@@ -1,5 +1,5 @@
 var background_page = chrome.extension.getBackgroundPage();
-var TARGET_HOST = "http://localhost:5000";
+var TARGET_HOST = "http://geotagx.org";
 var refreshCategoriesTimeOut = 24 * 60 * 60 * 1000;
 
 
