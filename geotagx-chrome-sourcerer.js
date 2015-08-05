@@ -1,6 +1,6 @@
 var background_page = chrome.extension.getBackgroundPage();
 var TARGET_HOST = "http://geotagx.org";
-var refreshCategoriesTimeOut = 24 * 60 * 60 * 1000;
+var refreshCategoriesTimeOut = 1000 * 60 * 60;
 
 
 chrome.contextMenus.create({
@@ -29,19 +29,9 @@ function checkForBlacklistedHosts(SOURCE_URL, IMAGE_URL){
 
 var GEOTAGX_CATEGORIES =  [
    {
-      "img":"/static/geotagx-img/categories/ebola_response.png",
-      "name":"Ebola Response",
-      "short_name":"ebolaresponse"
-   },
-   {
-      "img":"/static/geotagx-img/categories/winter_shelter.png",
-      "name":"Winter Shelter",
-      "short_name":"emergencyshelterassessmentinthemiddleeast"
-   },
-   {
       "img":"/static/geotagx-img/categories/yemeni_agricultural_water_assesment.png",
-      "name":"Yemeni Agricultural Water Assesment",
-      "short_name":"yemeniagriculturalwaterassessment"
+      "name":"Yemeni Cultural Heritage at Risk",
+      "short_name":"yemeniculturalheritageatrisk"
    },
    {
       "img":"/static/geotagx-img/categories/yamuna_monsoon_flooding.png",
