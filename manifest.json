@@ -1,20 +1,31 @@
-{ "background" : { "scripts" : [ "lib/base64.min.js",
-          "lib/jquery-2.1.4.min.js",
-          "geotagx-chrome-sourcerer.js"
-        ] },
-  "browser_action" : { "default_icon" : {  },
-      "default_title" : "GeoTag-X"
-    },
-  "content_security_policy" : "script-src 'self' 'unsafe-eval'; object-src 'self'",
-  "description" : "Helps Citizen Scientists all around the world help us find images from all around the world that we can analyse.",
-  "icons" : { "128" : "icons/icon128.png",
-      "16" : "icons/icon16.png",
-      "48" : "icons/icon48.png"
-    },
-  "manifest_version" : 2,
-  "name" : "GeoTag-X Chrome Sourcerer",
-  "permissions" : [ "contextMenus",
+{
+   "name":"GeoTag-X Chrome Sourcerer",
+   "description":"Helps Citizen Scientists all around the world help us find images from all around the world that we can analyse.",
+   "version":"0.1",
+   "permissions":[
+      "contextMenus",
       "tabs"
-    ],
-  "version" : "0.6"
+   ],
+   "icons":{
+      "16":"icons/icon16.png",
+      "48":"icons/icon48.png",
+      "128":"icons/icon128.png"
+   },
+   "background":{
+      "scripts":[
+         "lib/base64.min.js",
+         "lib/jquery-2.1.4.min.js",
+         "geotagx-chrome-sourcerer.js"
+      ]
+   },
+   "browser_action":{
+      "default_icon":{
+         "16":"icons/icon16.png",
+         "48":"icons/icon48.png"
+      },
+      "default_title":"GeoTag-X",
+      "default_popup":"popup.html"
+   },
+   "content_security_policy":"script-src 'self' 'unsafe-eval'; object-src 'self'",
+   "manifest_version":2
 }
