@@ -1,7 +1,7 @@
 {
    "name":"GeoTag-X Chrome Sourcerer",
    "description":"Helps Citizen Scientists all around the world help us find images from all around the world that we can analyse.",
-   "version":"0.1",
+   "version":"0.7",
    "permissions":[
       "contextMenus",
       "tabs"
