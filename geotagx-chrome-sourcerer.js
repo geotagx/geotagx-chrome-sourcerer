@@ -1,6 +1,6 @@
 var background_page = chrome.extension.getBackgroundPage();
 var TARGET_HOST = "http://geotagx.org";
-var refreshCategoriesTimeOut = 1000 * 60 * 60;
+var refreshCategoriesTimeOut = 24 * 1000 * 60 * 60;
 
 
 chrome.contextMenus.create({
