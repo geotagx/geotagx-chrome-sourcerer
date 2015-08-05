@@ -1,5 +1,5 @@
 var background_page = chrome.extension.getBackgroundPage();
-var TARGET_HOST = "http://geotagx.org";
+var TARGET_HOST = "http://localhost:5000";
 var refreshCategoriesTimeOut = 24 * 60 * 60 * 1000;
 
 
@@ -17,9 +17,12 @@ function checkForBlacklistedHosts(SOURCE_URL, IMAGE_URL){
   var parser = document.createElement('a');
   parser.href = SOURCE_URL;
 
-  if(parser.hostname.match(/\.google\./gi)){
-    return true;
-  }else{
+  if(parser.hostname.match(/\.google\./gi) ){
+    return "GOOGLE";
+  }else if(parser.hostname.match(/geotagx\./gi)){
+    return "GEOTAGX";
+  }
+  else{
     return false;
   }
 }
@@ -99,10 +102,15 @@ chrome.runtime.onMessage.addListener(function(request) {
     if (request.type === 'found_image') {
 
         //Check for blacklisted domains
-        if(checkForBlacklistedHosts(request.sourceUrl, request.imageURL)){
+        var blackListCheck = checkForBlacklistedHosts(request.sourceUrl, request.imageURL);
+        if(blackListCheck == "GOOGLE"){
             alert("We cannot collect images from Google. We would encourage you to visit the page and then try resending the image as we are required to collect the actual source of the image");
             return;
-        }else{
+        }else if(blackListCheck == "GEOTAGX"){
+          alert("You cannot send images from GeoTagX.org. Please try sending another image from another domain.");
+          return;
+        }
+        else{
             chrome.tabs.create({
                 url: chrome.extension.getURL('choose_category.html'),
                 active: false
@@ -169,7 +177,9 @@ geotagxTinyEye.imageSearch = function(info, tab) {
 };
 
 // Create two context menu items for image, and page clicks
-chrome.contextMenus.create({
+var contextMenuTinyEyeObject = {
     "title": "Reverse Search Image on TinEye for similar images",
     "contexts": ["image"],
-    "onclick": geotagxTinyEye.imageSearch});
+    "onclick": geotagxTinyEye.imageSearch}
+
+var contextMenuTinyEyeId = chrome.contextMenus.create(contextMenuTinyEyeObject);
