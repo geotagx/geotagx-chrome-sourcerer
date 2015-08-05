@@ -141,45 +141,45 @@ chrome.runtime.onMessage.addListener(function(request) {
 // Add TinyEye Reverse Search for images
 // Code Inspired from : https://code.google.com/p/tineye-chrome/
 
-var geotagxTinyEye = geotagxTinyEye || {};
-geotagxTinyEye.SERVER = 'www.tineye.com';
+// var geotagxTinyEye = geotagxTinyEye || {};
+// geotagxTinyEye.SERVER = 'www.tineye.com';
 
 
-geotagxTinyEye.openUrl = function(url) {
-    // Open new tabs next to current one
-    chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+// geotagxTinyEye.openUrl = function(url) {
+//     // Open new tabs next to current one
+//     chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
 
-        // Get new tab index
-        var new_tab_index = tabs[0].index + 1;
+//         // Get new tab index
+//         var new_tab_index = tabs[0].index + 1;
 
-        // Check where the user wants the url to be open
-        switch(localStorage.tab_visibility) {
-            case "background":
-                chrome.tabs.create({url: url, active: false, index: new_tab_index});
-                break;
-            case "foreground":
-                chrome.tabs.create({url: url, active: true, index: new_tab_index});
-                break;
-            case "current":
-                chrome.tabs.update(tabs[0].id, {url: url});
-                break;
-            default:
-                chrome.tabs.create({url: url, active: false, index: new_tab_index});
-        }
+//         // Check where the user wants the url to be open
+//         switch(localStorage.tab_visibility) {
+//             case "background":
+//                 chrome.tabs.create({url: url, active: false, index: new_tab_index});
+//                 break;
+//             case "foreground":
+//                 chrome.tabs.create({url: url, active: true, index: new_tab_index});
+//                 break;
+//             case "current":
+//                 chrome.tabs.update(tabs[0].id, {url: url});
+//                 break;
+//             default:
+//                 chrome.tabs.create({url: url, active: false, index: new_tab_index});
+//         }
 
-    });
-};
+//     });
+// };
 
-geotagxTinyEye.imageSearch = function(info, tab) {
-    // Send the selected image to tinyeye
-    url = encodeURIComponent(info.srcUrl);
-    geotagxTinyEye.openUrl("http://" + geotagxTinyEye.SERVER + "/search/?url=" + url);
-};
+// geotagxTinyEye.imageSearch = function(info, tab) {
+//     // Send the selected image to tinyeye
+//     url = encodeURIComponent(info.srcUrl);
+//     geotagxTinyEye.openUrl("http://" + geotagxTinyEye.SERVER + "/search/?url=" + url);
+// };
 
-// Create two context menu items for image, and page clicks
-var contextMenuTinyEyeObject = {
-    "title": "Reverse Search Image on TinEye for similar images",
-    "contexts": ["image"],
-    "onclick": geotagxTinyEye.imageSearch}
+// // Create two context menu items for image, and page clicks
+// var contextMenuTinyEyeObject = {
+//     "title": "Reverse Search Image on TinEye for similar images",
+//     "contexts": ["image"],
+//     "onclick": geotagxTinyEye.imageSearch}
 
-var contextMenuTinyEyeId = chrome.contextMenus.create(contextMenuTinyEyeObject);
+// var contextMenuTinyEyeId = chrome.contextMenus.create(contextMenuTinyEyeObject);
